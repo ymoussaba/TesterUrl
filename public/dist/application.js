@@ -21,6 +21,7 @@ var ApplicationConfiguration = (function () {
         registerModule: registerModule
     };
 })();
+
 'use strict';
 
 //Start by defining the main module and adding the module dependencies
@@ -41,6 +42,7 @@ angular.element(document).ready(function () {
     //Then init the app
     angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
 });
+
 'use strict';
 
 // Use Applicaion configuration module to register a new module
@@ -100,6 +102,7 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
         });
     }
 ]);
+
 'use strict';
 
 
@@ -109,6 +112,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         $scope.authentication = Authentication;
     }
 ]);
+
 'use strict';
 
 //Menu service used for managing  menus
@@ -275,6 +279,7 @@ angular.module('core').service('Menus', [
         this.addMenu('topbar');
     }
 ]);
+
 'use strict';
 
 // Configuring the Articles module
@@ -286,6 +291,7 @@ angular.module('requests').run(['Menus',
         Menus.addSubMenuItem('topbar', 'requests', 'New Request', 'requests/create');
     }
 ]);
+
 'use strict';
 
 //Setting up route
@@ -311,6 +317,7 @@ angular.module('requests').config(['$stateProvider',
             });
     }
 ]);
+
 'use strict';
 
 // Requests controller
@@ -391,6 +398,7 @@ angular.module('requests').factory('Requests', ['$resource',
             }
         });
     }]);
+
 'use strict';
 
 // Configuring the Articles module
@@ -402,6 +410,7 @@ angular.module('responses').run(['Menus',
         Menus.addSubMenuItem('topbar', 'responses', 'New Response', 'responses/create');
     }
 ]);
+
 'use strict';
 
 //Setting up route
@@ -609,6 +618,7 @@ angular.module('urls').run(['Menus',
         Menus.addSubMenuItem('topbar', 'urls', 'New Url', 'urls/create');
     }
 ]);
+
 'use strict';
 
 //Setting up route
@@ -634,6 +644,7 @@ angular.module('urls').config(['$stateProvider',
             });
     }
 ]);
+
 'use strict';
 
 // Urls controller
@@ -686,6 +697,7 @@ angular.module('urls').factory('Urls', ['$resource',
         });
     }
 ]);
+
 'use strict';
 
 // Config HTTP Error Handling
@@ -716,6 +728,7 @@ angular.module('users').config(['$httpProvider',
         ]);
     }
 ]);
+
 'use strict';
 
 // Setting up route
@@ -761,6 +774,7 @@ angular.module('users').config(['$stateProvider',
             });
     }
 ]);
+
 'use strict';
 
 angular.module('users').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication',
@@ -795,6 +809,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
         };
     }
 ]);
+
 'use strict';
 
 angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication',
@@ -839,6 +854,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
         };
     }
 ]);
+
 'use strict';
 
 angular.module('users').controller('SettingsController', ['$scope', '$http', '$location', 'Users', 'Authentication',
@@ -926,6 +942,7 @@ angular.module('users').factory('Authentication', [
         return _this._data;
     }
 ]);
+
 'use strict';
 
 // Users service used for communicating with the users REST endpoint
