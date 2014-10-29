@@ -1,0 +1,36 @@
+.content {
+	margin-top: 50px;
+}
+.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+.ng-invalid.ng-dirty{
+    border-color:#FA787E;
+}
+.ng-valid.ng-dirty{
+    border-color:#78FA89;
+}
+body {
+    margin-top: 70px;
+}
+
+.myTextArea {
+    width: 100%;
+    height: 400px;
+}
+
+.fullWidth {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.navbar-nav li:hover {
+    background-color: #eeeeee;
+}
+
+body {
+    background-color: #eeeeee;
+}

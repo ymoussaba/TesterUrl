@@ -1,0 +1,22 @@
+<section data-ng-controller="UrlsController">
+    <div class="page-header">
+        <h1>#1 Generate Url</h1>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <div class="controls">
+                        <input type="text" data-ng-model="name" ng-disabled="true" id="name" class="form-control" placeholder="Url will be here" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary fullWidth">Generate</button>
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>

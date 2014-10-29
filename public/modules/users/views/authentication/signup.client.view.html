@@ -1,0 +1,41 @@
+<section class="row" data-ng-controller="AuthenticationController">
+    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 login-form-bg">
+        <h3 class="text-center">Sign up Google+</h3>
+        <div class="text-center">
+            <a href="/auth/google" class="undecorated-link">
+                <img src="/modules/users/img/buttons/google.png">
+            </a>
+        </div>
+        <h3 class="text-center">Or with your email</h3>
+        <div class="row">
+        <div class="col-xs-offset-2 col-xs-8 ">
+            <form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
+                <fieldset>
+                    <div class="form-group">
+                        <div data-ng-show="error" class="text-center text-danger">
+                            <div class="alert alert-danger">
+                                <strong data-ng-bind="error"></strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+                    </div>
+                    <div class="text-center form-group">
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">Sign up</button>
+                    </div>
+                    <div class="form-group text-center">
+                        Or &nbsp;<a href="/#!/signin" class="show-signup">Sign in</a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        </div>
+    </div>
+</section>
