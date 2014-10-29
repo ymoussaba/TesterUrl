@@ -2,64 +2,65 @@
 
 // Requests controller
 angular.module('requests').controller('RequestsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Requests', 'responses',
-	function($scope, $stateParams, $location, Authentication, Requests, responses) {
-		$scope.authentication = Authentication;
+    function ($scope, $stateParams, $location, Authentication, Requests, responses) {
+        $scope.authentication = Authentication;
 
-		// Create new Request
-		$scope.create = function() {
-			// Create new Request object
-			var request = new Requests ({
-				name: this.name
-			});
+        // Create new Request
+        $scope.create = function () {
+            // Create new Request object
+            var request = new Requests({
+                name: this.name
+            });
 
-			// Redirect after save
-			request.$save(function(response) {
-				$location.path('requests/' + response._id);
+            // Redirect after save
+            request.$save(function (response) {
+                $location.path('requests/' + response._id);
 
-				// Clear form fields
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+                // Clear form fields
+                $scope.name = '';
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-		// Remove existing Request
-		$scope.remove = function( request ) {
-			if ( request ) { request.$remove();
+        // Remove existing Request
+        $scope.remove = function (request) {
+            if (request) {
+                request.$remove();
 
-				for (var i in $scope.requests ) {
-					if ($scope.requests [i] === request ) {
-						$scope.requests.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.request.$remove(function() {
-					$location.path('requests');
-				});
-			}
-		};
+                for (var i in $scope.requests) {
+                    if ($scope.requests [i] === request) {
+                        $scope.requests.splice(i, 1);
+                    }
+                }
+            } else {
+                $scope.request.$remove(function () {
+                    $location.path('requests');
+                });
+            }
+        };
 
-		// Update existing Request
-		$scope.update = function() {
-			var request = $scope.request ;
+        // Update existing Request
+        $scope.update = function () {
+            var request = $scope.request;
 
-			request.$update(function() {
-				$location.path('requests/' + request._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+            request.$update(function () {
+                $location.path('requests/' + request._id);
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+        };
 
-		// Find a list of Requests
-		$scope.find = function() {
-			$scope.requests = Requests.query();
-		};
+        // Find a list of Requests
+        $scope.find = function () {
+            $scope.requests = Requests.query();
+        };
 
-		// Find existing Request
-		$scope.findOne = function() {
-			$scope.request = Requests.get({ 
-				requestId: $stateParams.requestId
-			});
-		};
-	}
+        // Find existing Request
+        $scope.findOne = function () {
+            $scope.request = Requests.get({
+                requestId: $stateParams.requestId
+            });
+        };
+    }
 ]);

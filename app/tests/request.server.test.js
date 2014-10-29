@@ -1,8 +1,8 @@
 'use strict';
 
 /**
-* Module dependencies.
-*/
+ * Module dependencies.
+ */
 var should = require('should'),
     supertest = require('supertest'),
     app = require('../../server');
@@ -11,13 +11,13 @@ var should = require('should'),
 describe('requests unit tests', function () {
     this.timeout(45000);
     let id;
-    let requestBody = ['a','b','c'];
-    before(function(done) {
+    let requestBody = ['a', 'b', 'c'];
+    before(function (done) {
         supertest(app).
             post('/urls').
-            end(function(err, res) {
+            end(function (err, res) {
                 res.status.should.equal(200);
-                id = res.body._id
+                id = res.body._id;
                 done();
             });
     });
@@ -26,7 +26,7 @@ describe('requests unit tests', function () {
         it('should create request', function (done) {
             // client request
             supertest(app).
-                post('/r/'+id).
+                post('/r/' + id).
                 end(function (err, res) {
                     res.status.should.equal(200);
                     res.body.toString().should.equal(requestBody.toString());
@@ -34,8 +34,8 @@ describe('requests unit tests', function () {
                 });
             // user response
             supertest(app).
-                post('/responses/'+id).
-                send({'body':requestBody}).
+                post('/responses/' + id).
+                send({'body': requestBody}).
                 end(function (err, res) {
                     res.status.should.equal(200);
                 });
@@ -66,18 +66,18 @@ describe('requests unit tests', function () {
         });
     });
 
-    after(function(done) {
+    after(function (done) {
         supertest(app).
-            delete('/urls/'+id).
-            end(function(err, res) {
+            delete('/urls/' + id).
+            end(function (err, res) {
                 res.status.should.equal(200);
                 supertest(app).
-                    delete('/requests/'+id).
-                    end(function(err, res) {
+                    delete('/requests/' + id).
+                    end(function (err, res) {
                         res.status.should.equal(200);
                         supertest(app).
-                            delete('/responses/'+id).
-                            end(function(err, res) {
+                            delete('/responses/' + id).
+                            end(function (err, res) {
                                 res.status.should.equal(200);
                                 done();
                             });

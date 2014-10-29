@@ -4,16 +4,16 @@
     </div>
     <div class="list-group">
         <a data-ng-repeat="response in responses" data-ng-href="#!/responses/{{response._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="response.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="response.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="response.name"></h4>
+            <small class="list-group-item-text">
+                Posted on
+                <span data-ng-bind="response.created | date:'medium'"></span>
+                by
+                <span data-ng-bind="response.user.displayName"></span>
+            </small>
+            <h4 class="list-group-item-heading" data-ng-bind="response.name"></h4>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!responses.$resolved || responses.length">
-    	No Responses yet, why don't you <a href="/#!/responses/create">create one</a>?
+        No Responses yet, why don't you <a href="/#!/responses/create">create one</a>?
     </div>
 </section>

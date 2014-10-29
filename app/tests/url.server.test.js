@@ -16,16 +16,16 @@ describe('urls unit tests', function () {
                 post('/urls').
                 end(function (err, res) {
                     res.status.should.equal(200);
-                    id = res.body._id
+                    id = res.body._id;
                     done();
                 });
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         supertest(app).
-            delete('/urls/'+id).
-            end(function(err, res) {
+            delete('/urls/' + id).
+            end(function (err, res) {
                 res.status.should.equal(200);
                 done();
             });
