@@ -27,7 +27,7 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                'public/lib/ZeroClipboard/dist/ZeroClipboard.min.js',
+                'public/lib/zeroclipboard/dist/ZeroClipboard.min.js',
                 'public/lib/ng-clip/src/ngClip.js',
                 'public/lib/angular-block-ui/dist/angular-block-ui.js'
 			]
