@@ -1,8 +1,8 @@
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider', 'ngClipProvider',
-    function ($stateProvider, $urlRouterProvider, ngClipProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+    function ($stateProvider, $urlRouterProvider) {
         // Redirect to home view when route not found
         $urlRouterProvider.otherwise('/');
 
@@ -11,8 +11,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', 'ngClipPr
             state('home', {
                 url: '/',
                 templateUrl: 'modules/core/views/home.client.view.html'
-            });
-
-        ngClipProvider.setPath('/lib/zeroclipboard/dist/ZeroClipboard.swf');
+            }).
+            state('baseHome', {
+            url: '',
+            templateUrl: 'modules/core/views/home.client.view.html'
+        });
     }
 ]);

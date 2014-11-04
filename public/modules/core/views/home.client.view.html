@@ -1,18 +1,46 @@
 <section data-ng-controller="HomeController">
+    <i>
+        <p class="text-center">
+            5 simple steps to test your networked apps without a server!
+        </p>
+    </i>
+</section>
+<section data-ng-controller="UrlsController">
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div id="step1">
+        #1 Generate your url<span class="glyphicon glyphicon-share-alt rotated"></span>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <button type="submit" id="generateBtn" class="btn btn-primary fullWidth">Generate</button>
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </section>
 
-<section>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <!--<form ng-submit="respCtrl.createResponse()">-->
-            <!--<div class="col-12">-->
-            <!--<textarea ng-model="respCtrl.responseText" id="myTextArea" placeholder="Enter your response here..." class="myTextArea"></textarea>-->
-            <!--</div>-->
-            <!--<div class="col-12">-->
-            <!--<button type="submit" class="btn btn-primary fullWidth">Submit</button>-->
-            <!--</div>-->
-            <!--</form>-->
-        </div>
+<section data-ng-controller="UrlsController">
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div id="step2">
+        #2 Copy this url into your app<span class="glyphicon glyphicon-share-alt rotated"></span>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <button type="submit" id="generateBtn" class="btn btn-primary fullWidth">Generate</button>
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
     </div>
 </section>

@@ -14,10 +14,15 @@ angular.module('urls').controller('UrlsController', ['$scope', '$stateParams', '
 
             // Redirect after save
             url.$save(function (response) {
-                $location.path('urls/' + response._id);
+                localStorage.firstName = response._id;
 
-                // Clear form fields
-                $scope.name = '';
+                // Disable step 1 form fields
+                var generateBtn = angular.element( document.querySelector( '#generateBtn' ) )[0];
+                generateBtn.disabled = true;
+
+                var step1 = angular.element( document.querySelector( '#step1' ) )[0];
+                step1.style.opacity = 0.4;
+
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
