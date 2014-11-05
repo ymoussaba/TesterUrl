@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function () {
     // Init module configuration options
     var applicationModuleName = 'testkit';
-    var applicationModuleVendorDependencies = ['ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ngClipboard', 'blockUI'];
+    var applicationModuleVendorDependencies = ['ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ngClipboard' /*, 'blockUI'*/];
 
     // Add a new vertical module
     var registerModule = function (moduleName, dependencies) {
@@ -440,8 +440,8 @@ angular.module('responses').config(['$stateProvider',
 'use strict';
 
 // Responses controller
-angular.module('responses').controller('ResponsesController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Responses', 'blockUI', 'Notify', 'Urls',
-    function ($scope, $stateParams, $http, $location, Authentication, Responses, blockUI, Notify, Urls) {
+angular.module('responses').controller('ResponsesController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Responses', /*'blockUI',*/ 'Notify', 'Urls',
+    function ($scope, $stateParams, $http, $location, Authentication, Responses, /*blockUI,*/ Notify, Urls) {
         $scope.authentication = Authentication;
 
         // Create new Response
@@ -519,12 +519,12 @@ angular.module('responses').controller('ResponsesController', ['$scope', '$state
         };
 
         $scope.ready = function () {
-            blockUI.start('Make a request already :)');
+            //blockUI.start('Make a request already :)');
             var id = $location.$$url.split('/')[3];
             Notify.sendMsg('Waiting', {'id': id});
 
             $scope.$on('Received', function () {
-                blockUI.stop();
+                //blockUI.stop();
             });
         };
 
