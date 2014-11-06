@@ -65,7 +65,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
             $scope.$on(receivedStr, function(event, args) {
                 $scope.requestText = formatRequest(args);
-                $scope.nextStep($scope.step);
+                $scope.doStep(3);
 
                 function formatRequest(req) {
                     var str = 'httpVersion:'+req.httpVersion+'\n';
@@ -89,7 +89,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     // this callback will be called asynchronously
                     // when the response is available
                     $scope.saveButtonText = 'Update';
-                    console.log(data);
                 }).
                 error(function (data, status, headers, config) {
                     // called asynchronously if an error occurs
