@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function () {
     // Init module configuration options
     var applicationModuleName = 'testkit';
-    var applicationModuleVendorDependencies = ['ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ngClipboard' /*, 'blockUI'*/];
+    var applicationModuleVendorDependencies = ['ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', /*'ngClipboard',*/ 'toaster'];
 
     // Add a new vertical module
     var registerModule = function (moduleName, dependencies) {
@@ -68,8 +68,8 @@ ApplicationConfiguration.registerModule('users');
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider', 'ngClipProvider',
-    function ($stateProvider, $urlRouterProvider, ngClipProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+    function ($stateProvider, $urlRouterProvider) {
         // Redirect to home view when route not found
         $urlRouterProvider.otherwise('/');
 
@@ -78,9 +78,11 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', 'ngClipPr
             state('home', {
                 url: '/',
                 templateUrl: 'modules/core/views/home.client.view.html'
-            });
-
-        ngClipProvider.setPath('/lib/zeroclipboard/dist/ZeroClipboard.swf');
+            }).
+            state('baseHome', {
+            url: '',
+            templateUrl: 'modules/core/views/home.client.view.html'
+        });
     }
 ]);
 
@@ -106,12 +108,152 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication',
-    function ($scope, Authentication) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Urls', '$location', '$http', 'RequestObserver', 'AnchorSmoothScroll', 'toaster', '$window',
+    function ($scope, Authentication, Urls, $location, $http, RequestObserver, AnchorSmoothScroll, toaster, $window) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
+        $scope.saveButtonText = 'Save';
+        localStorage.clear();
+
+        $scope.nextStep = function(step) {
+            $scope.step = ++step;
+            $scope.doStep($scope.step);
+        };
+
+        $scope.doStep = function(step) {
+            $scope.step = step;
+            switch (step) {
+                case 1: {
+                    createUrl();
+                    break;
+                }
+                case 2: {
+                    findOneUrl();
+                    break;
+                }
+                case 3: {
+                    gotoElement('step3');
+                    $window.ga('send', 'pageview', { page: 'step3'});
+                    break;
+                }
+                case 4: {
+                    createResponse();
+                    break;
+            }
+            }
+        };
+
+        // Create new Url
+        function createUrl() {
+            // Create new Url object
+            var url = new Urls({});
+            // Redirect after save
+            url.$save(function (response) {
+                localStorage.id = response._id;
+                $scope.nextStep($scope.step);
+
+            }, function (errorResponse) {
+                $scope.error = errorResponse.data.message;
+            });
+            $window.ga('send', 'pageview', { page: 'step1'});
+        }
+
+        // Find existing Url
+        function findOneUrl() {
+            gotoElement('step2');
+            Urls.get({
+                urlId: localStorage.id
+            }, function () {
+                $scope.url = 'http://' + $location.$$host + ':' + $location.$$port + '/r/' + localStorage.id;
+                waitForRequest();
+            });
+            $window.ga('send', 'pageview', { page: 'step2'});
+        }
+
+        function waitForRequest() {
+            var receivedStr = 'Received';
+            RequestObserver.observe(localStorage.id, receivedStr);
+
+            $scope.$on(receivedStr, function(event, args) {
+
+                function formatRequest(req) {
+                    var str = 'httpVersion:'+req.httpVersion+'\n';
+                    str += 'method:'+req.method+'\n';
+                    str += 'remoteAddress:'+req.remoteAddress+'\n';
+                    str += 'url:'+req.url+'\n';
+                    str += '\n';
+                    str += 'headers:\n';
+                    Object.keys(req.headers).forEach(function (key, index) {
+                        str += '   '+key + ':' + this[key] + '\n';
+                    }, req.headers);
+                    return str;
+                }
+                $scope.requestText = formatRequest(args);
+                $scope.doStep(3);
+            });
+        }
+
+        function createResponse() {
+            var id = localStorage.id;
+            $http.post('/responses/' + id, {'body': $scope.responseText}).
+                success(function (data, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    $scope.saveButtonText = 'Update';
+                    toaster.pop('success', 'Response updated.', 'Check your requesting client for this response.');
+                }).
+                error(function (data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log(data);
+                    toaster.pop('warning', 'Whoops! Something bad happened.');
+                });
+
+            $window.ga('send', 'pageview', { page: 'step4'});
+        }
+
+        function gotoElement(eID){
+            // set the location.hash to the id of
+            // the element you wish to scroll to.
+            $location.hash(eID);
+
+            // call $anchorScroll()
+            AnchorSmoothScroll.scrollTo(eID);
+
+        }
     }
 ]);
+
+'use strict';
+
+//Responses service used to communicate Responses REST endpoints
+angular.module('core')
+    .factory('RequestObserver', ['$rootScope', '$http', function ($rootScope, $http) {
+        var notify = {};
+        notify.observe = function (id, receivedStr) {
+            $http.post('/responses/' + id).
+                success(function (data, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log(data);
+                    $http.get('/requests/' + id).
+                        success(function (data, status, headers, config) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            console.log(data);
+
+                            $rootScope.$broadcast(receivedStr, data);
+                        });
+                }).
+                error(function (data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log(data);
+                });
+        };
+
+        return notify;
+    }]);
 
 'use strict';
 
@@ -282,6 +424,64 @@ angular.module('core').service('Menus', [
 
 'use strict';
 
+// grabbed from http://jsfiddle.net/brettdewoody/y65G5/
+angular.module('core').service('AnchorSmoothScroll', [
+    function() {
+        this.scrollTo = function(eID) {
+            // This scrolling function
+            // is from http://www.itnewb.com/tutorial/Creating-the-Smooth-Scroll-Effect-with-JavaScript
+
+            function currentYPosition() {
+                // Firefox, Chrome, Opera, Safari
+                if (window.pageYOffset) {
+                    return window.pageYOffset;
+                }
+                // Internet Explorer 6 - standards mode
+                if (document.documentElement && document.documentElement.scrollTop)
+                    return document.documentElement.scrollTop;
+                // Internet Explorer 6, 7 and 8
+                if (document.body.scrollTop) return document.body.scrollTop;
+                return 0;
+            }
+
+            function elmYPosition(eID) {
+                var elm = document.getElementById(eID);
+                var y = elm.offsetTop;
+                var node = elm;
+                while (node.offsetParent && node.offsetParent !== document.body) {
+                    node = node.offsetParent;
+                    y += node.offsetTop;
+                } return y;
+            }
+
+            var startY = currentYPosition();
+            var stopY = elmYPosition(eID)-70;
+            var distance = stopY > startY ? stopY - startY : startY - stopY;
+            if (distance < 100) {
+                scrollTo(0, stopY); return;
+            }
+            var speed = Math.round(distance / 100);
+            if (speed >= 20) speed = 20;
+            var step = Math.round(distance / 25);
+            var leapY = stopY > startY ? startY + step : startY - step;
+            var timer = 0;
+            if (stopY > startY) {
+                for ( var i=startY; i<stopY; i+=step ) {
+                    setTimeout('window.scrollTo(0, '+leapY+')', timer * speed);
+                    leapY += step; if (leapY > stopY) leapY = stopY; timer++;
+                } return;
+            }
+            for ( var j=startY; j>stopY; j-=step ) {
+                setTimeout('window.scrollTo(0, '+leapY+')', timer * speed);
+                leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
+            }
+
+        };
+    }
+]);
+
+'use strict';
+
 // Configuring the Articles module
 angular.module('requests').run(['Menus',
     function (Menus) {
@@ -440,8 +640,8 @@ angular.module('responses').config(['$stateProvider',
 'use strict';
 
 // Responses controller
-angular.module('responses').controller('ResponsesController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Responses', /*'blockUI',*/ 'Notify', 'Urls',
-    function ($scope, $stateParams, $http, $location, Authentication, Responses, /*blockUI,*/ Notify, Urls) {
+angular.module('responses').controller('ResponsesController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Responses', 'blockUI', 'Notify', 'Urls',
+    function ($scope, $stateParams, $http, $location, Authentication, Responses, blockUI, Notify, Urls) {
         $scope.authentication = Authentication;
 
         // Create new Response
@@ -459,30 +659,6 @@ angular.module('responses').controller('ResponsesController', ['$scope', '$state
                     // or server returns response with an error status.
                     console.log(data);
                 });
-
-
-            //var myTextArea = angular.element.find("#myTextArea");
-            //var response = new Responses ({
-            //	responseText: $scope.responseText
-            //});
-            //response.$save(function(result) {
-            //	console.log('ss');
-            //});
-
-            //// Create new Response object
-            //var response = new Responses ({
-            //	name: this.name
-            //});
-            //
-            //// Redirect after save
-            //response.$save(function(response) {
-            //	$location.path('responses/' + response._id);
-            //
-            //	// Clear form fields
-            //	$scope.name = '';
-            //}, function(errorResponse) {
-            //	$scope.error = errorResponse.data.message;
-            //});
         };
 
         // Remove existing Response
@@ -519,12 +695,12 @@ angular.module('responses').controller('ResponsesController', ['$scope', '$state
         };
 
         $scope.ready = function () {
-            //blockUI.start('Make a request already :)');
+            blockUI.start('Make a request already :)');
             var id = $location.$$url.split('/')[3];
             Notify.sendMsg('Waiting', {'id': id});
 
             $scope.$on('Received', function () {
-                //blockUI.stop();
+                blockUI.stop();
             });
         };
 
@@ -538,74 +714,38 @@ angular.module('responses').controller('ResponsesController', ['$scope', '$state
     }
 ]);
 
-'use strict';
-
-//Responses service used to communicate Responses REST endpoints
-angular.module('responses')
-    .factory('Responses', ['$resource', function ($resource) {
-        return $resource('responses/:responseId', {
-            responseId: '@_id'
-        }, {
-            update: {
-                method: 'PUT'
-            }
-        });
-    }])
-    .factory('Notify', ['$rootScope', '$http', function ($rootScope, $http) {
-        var notify = {};
-        notify.sendMsg = function (msg, data) {
-//            data = data || {};
-//            $rootScope.$emit(msg,data);
-//            console.log(msg);
-            if (msg === 'Waiting') {
-                $http.post('/responses/' + data.id).
-                    success(function (data, status, headers, config) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        console.log(data);
-
-                        $http.get('/requests/' + data._id).
-                            success(function (data, status, headers, config) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                console.log(data);
-
-                                $rootScope.$broadcast('Received');
-                            });
-
-
-                    }).
-                    error(function (data, status, headers, config) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        console.log(data);
-                    });
-
-
-                //$http.get('/requests/'+data.id).
-                //    success(function(data, status, headers, config) {
-                //        // this callback will be called asynchronously
-                //        // when the response is available
-                //        console.log(data);
-                //    }).
-                //    error(function(data, status, headers, config) {
-                //        // called asynchronously if an error occurs
-                //        // or server returns response with an error status.
-                //        console.log(data);
-                //    });
-            }
-        };
-
-//        notify.getMsg = function(msg, func, $scope) {
-//            var unbind = $rootScope.$on(msg, func);
+//'use strict';
 //
-//            if (scope) {
-//                scope.$on('destroy', unbind);
-//            }
-//        }
-
-        return notify;
-    }]);
+////Responses service used to communicate Responses REST endpoints
+//angular.module('home')
+//    .factory('RequestObserver', ['$rootScope', '$http', function ($rootScope, $http) {
+//        var notify = {};
+//        notify.observe = function (id, receivedStr) {
+//            $http.post('/responses/' + id).
+//                success(function (data, status, headers, config) {
+//                    // this callback will be called asynchronously
+//                    // when the response is available
+//                    console.log(data);
+//                    $http.get('/requests/' + data._id).
+//                        success(function (data, status, headers, config) {
+//                            // this callback will be called asynchronously
+//                            // when the response is available
+//                            console.log(data);
+//
+//                            $rootScope.$broadcast(receivedStr);
+//                        });
+//
+//
+//                }).
+//                error(function (data, status, headers, config) {
+//                    // called asynchronously if an error occurs
+//                    // or server returns response with an error status.
+//                    console.log(data);
+//                });
+//        };
+//
+//        return notify;
+//    }]);
 
 'use strict';
 
@@ -652,23 +792,28 @@ angular.module('urls').controller('UrlsController', ['$scope', '$stateParams', '
     function ($scope, $stateParams, $location, Authentication, Urls) {
         $scope.authentication = Authentication;
 
-        // Create new Url
-        $scope.create = function () {
-            // Create new Url object
-            var url = new Urls({
-                name: this.name
-            });
-
-            // Redirect after save
-            url.$save(function (response) {
-                $location.path('urls/' + response._id);
-
-                // Clear form fields
-                $scope.name = '';
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
+        //// Create new Url
+        //$scope.create = function () {
+        //    // Create new Url object
+        //    var url = new Urls({
+        //        name: this.name
+        //    });
+        //
+        //    // Redirect after save
+        //    url.$save(function (response) {
+        //        localStorage.firstName = response._id;
+        //
+        //        // Disable step 1 form fields
+        //        var generateBtn = angular.element( document.querySelector( '#generateBtn' ) )[0];
+        //        generateBtn.disabled = true;
+        //
+        //        var step1 = angular.element( document.querySelector( '#step1' ) )[0];
+        //        step1.style.opacity = 0.4;
+        //
+        //    }, function (errorResponse) {
+        //        $scope.error = errorResponse.data.message;
+        //    });
+        //};
 
         // Find existing Url
         $scope.findOne = function () {

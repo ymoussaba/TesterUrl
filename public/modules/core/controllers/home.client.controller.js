@@ -11,30 +11,30 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         $scope.nextStep = function(step) {
             $scope.step = ++step;
             $scope.doStep($scope.step);
-        }
+        };
 
         $scope.doStep = function(step) {
             $scope.step = step;
             switch (step) {
                 case 1: {
                     createUrl();
-                    break
+                    break;
                 }
                 case 2: {
                     findOneUrl();
-                    break
+                    break;
                 }
                 case 3: {
                     gotoElement('step3');
                     $window.ga('send', 'pageview', { page: 'step3'});
-                    break
+                    break;
                 }
                 case 4: {
                     createResponse();
-                    break
+                    break;
             }
             }
-        }
+        };
 
         // Create new Url
         function createUrl() {
@@ -49,7 +49,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                 $scope.error = errorResponse.data.message;
             });
             $window.ga('send', 'pageview', { page: 'step1'});
-        };
+        }
 
         // Find existing Url
         function findOneUrl() {
@@ -61,15 +61,13 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                 waitForRequest();
             });
             $window.ga('send', 'pageview', { page: 'step2'});
-        };
+        }
 
         function waitForRequest() {
             var receivedStr = 'Received';
             RequestObserver.observe(localStorage.id, receivedStr);
 
             $scope.$on(receivedStr, function(event, args) {
-                $scope.requestText = formatRequest(args);
-                $scope.doStep(3);
 
                 function formatRequest(req) {
                     var str = 'httpVersion:'+req.httpVersion+'\n';
@@ -83,8 +81,10 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     }, req.headers);
                     return str;
                 }
+                $scope.requestText = formatRequest(args);
+                $scope.doStep(3);
             });
-        };
+        }
 
         function createResponse() {
             var id = localStorage.id;
@@ -103,7 +103,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                 });
 
             $window.ga('send', 'pageview', { page: 'step4'});
-        };
+        }
 
         function gotoElement(eID){
             // set the location.hash to the id of
@@ -113,6 +113,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             // call $anchorScroll()
             AnchorSmoothScroll.scrollTo(eID);
 
-        };
+        }
     }
 ]);
