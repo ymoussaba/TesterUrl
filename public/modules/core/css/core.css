@@ -30,6 +30,10 @@ body {
     color: #777;
 }
 
+.instruction {
+    font-size: 16px;
+}
+
 .rotated90 {
     -ms-transform: rotate(90deg); /* IE 9 */
     -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */

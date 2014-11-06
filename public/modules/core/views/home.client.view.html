@@ -1,13 +1,13 @@
 <section data-ng-controller="HomeController" ng-init="step = 0">
     <i>
         <p class="text-center">
-            <u>5 simple steps to test your networked apps without a server!</u>
+            <u>5 simple steps to test your RESTFUL iOS, Android, or Web clients!</u>
         </p>
     </i>
     <div>&nbsp</div>
     <div>&nbsp</div>
     <div>&nbsp</div>
-    <div class="row">
+    <div class="row" id="step1">
         <div class="col-md-12" ng-class="{halfOpacity: step !== 0}">
             #1 Generate your url<span class="glyphicon glyphicon-share-alt rotated90"></span>
         </div>
@@ -27,7 +27,7 @@
     <div>&nbsp</div>
     <div>&nbsp</div>
     <div>&nbsp</div>
-    <div class="row">
+    <div class="row" id="step2">
         <div class="col-md-12" ng-class="{halfOpacity: step !== 2}">
             #2 Copy this url into your app<span class="glyphicon glyphicon-share-alt rotated90"></span>
         </div>
@@ -46,8 +46,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 text-right" ng-class="{halfOpacity: step !== 2}">
-            #3 And make your network request
+        <div class="col-md-12 text-right instruction" ng-class="{halfOpacity: step !== 2}">
+            (You can send as a POST, GET, ... with anything appended to the path)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-left" ng-class="{halfOpacity: step !== 2}">
+            #3 And make your network request from your app
         </div>
     </div>
     <div>&nbsp</div>
@@ -66,7 +71,7 @@
         </div>
     </div>
     <div>&nbsp</div>
-    <div class="row">
+    <div class="row" id="step3">
         <div class="col-md-12" ng-class="{halfOpacity: step < 3}">
             #4 Copy and paste in your response<span class="glyphicon glyphicon-share-alt rotated90"></span>
         </div>
@@ -83,6 +88,16 @@
     <div>&nbsp</div>
     <div>&nbsp</div>
     <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <div>&nbsp</div>
+    <toaster-container toaster-options="{'position-class': 'toast-top-full-width','time-out': 3000, 'close-button':true}"></toaster-container>
 </section>
 
 

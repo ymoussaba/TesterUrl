@@ -1,8 +1,8 @@
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Urls', '$location', '$http', 'RequestObserver',
-    function ($scope, Authentication, Urls, $location, $http, RequestObserver) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Urls', '$location', '$http', 'RequestObserver', 'AnchorSmoothScroll', 'toaster', '$window',
+    function ($scope, Authentication, Urls, $location, $http, RequestObserver, AnchorSmoothScroll, toaster, $window) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
         $scope.saveButtonText = 'Save';
@@ -25,12 +25,14 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     break
                 }
                 case 3: {
+                    gotoElement('step3');
+                    $window.ga('send', 'pageview', { page: 'step3'});
                     break
                 }
                 case 4: {
                     createResponse();
                     break
-                }
+            }
             }
         }
 
@@ -38,7 +40,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         function createUrl() {
             // Create new Url object
             var url = new Urls({});
-
             // Redirect after save
             url.$save(function (response) {
                 localStorage.id = response._id;
@@ -47,16 +48,19 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             }, function (errorResponse) {
                 $scope.error = errorResponse.data.message;
             });
+            $window.ga('send', 'pageview', { page: 'step1'});
         };
 
         // Find existing Url
         function findOneUrl() {
+            gotoElement('step2');
             Urls.get({
                 urlId: localStorage.id
             }, function () {
                 $scope.url = 'http://' + $location.$$host + ':' + $location.$$port + '/r/' + localStorage.id;
                 waitForRequest();
             });
+            $window.ga('send', 'pageview', { page: 'step2'});
         };
 
         function waitForRequest() {
@@ -89,12 +93,26 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     // this callback will be called asynchronously
                     // when the response is available
                     $scope.saveButtonText = 'Update';
+                    toaster.pop('success', 'Response updated.', 'Check your requesting client for this response.');
                 }).
                 error(function (data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     console.log(data);
+                    toaster.pop('warning', 'Whoops! Something bad happened.');
                 });
+
+            $window.ga('send', 'pageview', { page: 'step4'});
+        };
+
+        function gotoElement(eID){
+            // set the location.hash to the id of
+            // the element you wish to scroll to.
+            $location.hash(eID);
+
+            // call $anchorScroll()
+            AnchorSmoothScroll.scrollTo(eID);
+
         };
     }
 ]);

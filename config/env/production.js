@@ -7,8 +7,9 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.min.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
-                'public/lib/angular-block-ui/dist/angular-block-ui.min.css'
-            ],
+                'public/lib/angular-block-ui/dist/angular-block-ui.min.css',
+				'public/lib/angularjs-toaster/toaster.css'
+			],
 			js: [
 				'public/lib/angular/angular.min.js',
 				'public/lib/angular-resource/angular-resource.min.js',
@@ -19,10 +20,11 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.min.js',
 				'public/lib/angular-ui-utils/ui-utils.min.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
-                'public/lib/ng-clip/dest/ng-clip.min.js',
-                'public/lib/zeroclipboard/dist/ZeroClipboard.min.js',
-                'public/lib/angular-block-ui/dist/angular-block-ui.min.js'
-            ]
+                //'public/lib/ng-clip/dest/ng-clip.min.js',
+                //'public/lib/zeroclipboard/dist/ZeroClipboard.min.js',
+                'public/lib/angular-block-ui/dist/angular-block-ui.min.js',
+				'public/lib/angularjs-toaster/toaster.js'
+			]
 		},
 		css: 'public/dist/application.min.css',
 		js: 'public/dist/application.min.js'
