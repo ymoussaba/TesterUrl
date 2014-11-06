@@ -61,36 +61,25 @@
     <div class="row">
         <div class="col-md-12" >
             <fieldset>
-                <textarea ng-model="requestText" placeholder=""
-                      ng-disabled="step !== 3" class="myTextArea" readonly></textarea>
+                <textarea ng-model="requestText" placeholder="" ng-disabled="step !== 3" class="myTextArea" readonly></textarea>
             </fieldset>
         </div>
     </div>
     <div>&nbsp</div>
     <div class="row">
-        <div class="col-md-12" ng-class="{halfOpacity: step !== 3}">
+        <div class="col-md-12" ng-class="{halfOpacity: step < 3}">
             #4 Copy and paste in your response<span class="glyphicon glyphicon-share-alt rotated90"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12" >
             <fieldset>
-                <form ng-submit="create()" class="form-group">
-                    <textarea ng-model="responseText" placeholder="Enter your response here..."
-                              ng-disabled="step !== 3" class="myTextArea"></textarea>
-                    <button type="submit" class="btn btn-primary fullWidth">Submit</button>
-                </form>
+                <textarea ng-model="responseText" placeholder="Enter your response here..."
+                          ng-disabled="step < 3" class="myTextArea"></textarea>
+                <button ng-click="doStep(4)" class="btn btn-primary fullWidth">{{saveButtonText}}</button>
             </fieldset>
         </div>
     </div>
-
-
-
-
-
-
-
-
 </section>
 
 

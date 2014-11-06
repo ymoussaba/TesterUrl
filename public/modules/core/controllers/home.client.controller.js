@@ -1,14 +1,20 @@
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Urls', '$location', 'RequestObserver',
-    function ($scope, Authentication, Urls, $location, RequestObserver) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'Urls', '$location', '$http', 'RequestObserver',
+    function ($scope, Authentication, Urls, $location, $http, RequestObserver) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
+        $scope.saveButtonText = 'Save';
         localStorage.clear();
 
         $scope.nextStep = function(step) {
             $scope.step = ++step;
+            $scope.doStep($scope.step);
+        }
+
+        $scope.doStep = function(step) {
+            $scope.step = step;
             switch (step) {
                 case 1: {
                     createUrl();
@@ -19,6 +25,9 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     break
                 }
                 case 3: {
+                    break
+                }
+                case 4: {
                     createResponse();
                     break
                 }
@@ -73,7 +82,20 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             });
         };
 
-
-
+        function createResponse() {
+            var id = localStorage.id;
+            $http.post('/responses/' + id, {'body': $scope.responseText}).
+                success(function (data, status, headers, config) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    $scope.saveButtonText = 'Update';
+                    console.log(data);
+                }).
+                error(function (data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log(data);
+                });
+        };
     }
 ]);

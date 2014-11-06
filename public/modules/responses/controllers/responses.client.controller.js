@@ -20,30 +20,6 @@ angular.module('responses').controller('ResponsesController', ['$scope', '$state
                     // or server returns response with an error status.
                     console.log(data);
                 });
-
-
-            //var myTextArea = angular.element.find("#myTextArea");
-            //var response = new Responses ({
-            //	responseText: $scope.responseText
-            //});
-            //response.$save(function(result) {
-            //	console.log('ss');
-            //});
-
-            //// Create new Response object
-            //var response = new Responses ({
-            //	name: this.name
-            //});
-            //
-            //// Redirect after save
-            //response.$save(function(response) {
-            //	$location.path('responses/' + response._id);
-            //
-            //	// Clear form fields
-            //	$scope.name = '';
-            //}, function(errorResponse) {
-            //	$scope.error = errorResponse.data.message;
-            //});
         };
 
         // Remove existing Response

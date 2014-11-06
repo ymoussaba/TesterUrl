@@ -10,7 +10,7 @@ angular.module('core')
                     // this callback will be called asynchronously
                     // when the response is available
                     console.log(data);
-                    $http.get('/requests/' + data._id).
+                    $http.get('/requests/' + id).
                         success(function (data, status, headers, config) {
                             // this callback will be called asynchronously
                             // when the response is available
