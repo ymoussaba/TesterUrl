@@ -55,3 +55,37 @@ textarea {
 .halfOpacity {
     opacity: 0.5; /* See the text more clearly over the background */
 }
+
+.step {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    .step {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    body {
+        margin-top: 60px;
+        font-family: Ubuntu, Arial, sans-serif;
+        font-size: 14px;
+        color: #777;
+    }
+}

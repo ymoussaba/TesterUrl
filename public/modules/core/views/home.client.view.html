@@ -4,95 +4,88 @@
             Tester Url is a responsive playground server that provides an easy way to test your iOS/Android apps
         </p>
     </i>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div class="row" id="step1">
-        <div class="col-md-12" ng-class="{halfOpacity: step !== 0}">
-            #1 Generate your url<span class="glyphicon glyphicon-share-alt rotated90"></span>
+    <div class="step">
+        <div class="row" id="step1">
+            <div class="col-md-12" ng-class="{halfOpacity: step !== 0}">
+                #1 Generate your url<span class="glyphicon glyphicon-share-alt rotated90"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset>
+                    <div>
+                        <button ng-disabled="step !== 0" ng-click="nextStep(step)" id="createUrlBtn" class="btn btn-primary fullWidth">Generate</button>
+                    </div>
+                    <div data-ng-show="error" class="text-danger">
+                        <strong data-ng-bind="error"></strong>
+                    </div>
+                </fieldset>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <fieldset>
-                <div>
-                    <button ng-disabled="step !== 0" ng-click="nextStep(step)" id="createUrlBtn" class="btn btn-primary fullWidth">Generate</button>
+    <div class="step">
+        <div class="row" id="step2">
+            <div class="col-md-12" ng-class="{halfOpacity: step !== 2}">
+                #2 Copy this url into your app<span class="glyphicon glyphicon-share-alt rotated90"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <fieldset>
+                    <div>
+                        <input ng-disabled="step !== 2" type="text" data-ng-model="url"  id="name" class="form-control"
+                               placeholder="Url will be here" readonly>
+                    </div>
+                    <div data-ng-show="error" class="text-danger">
+                        <strong data-ng-bind="error"></strong>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-right instruction" ng-class="{halfOpacity: step !== 2}">
+                (You can send as a POST, GET, ... with anything appended to the path)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-left" ng-class="{halfOpacity: step !== 2}">
+                #3 And make your network request from your app
+            </div>
+        </div>
+    </div>
+    <div class="step">
+        <div class="row">
+            <div class="col-md-12" ng-class="{halfOpacity: step !== 3}">
+                (Here's your request information)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <fieldset>
+                    <textarea ng-model="requestText" placeholder="" ng-disabled="step !== 3" class="myTextArea" readonly></textarea>
+                </fieldset>
+            </div>
+        </div>
+        <div class="step">
+            <div class="row" id="step3">
+                <div class="col-md-12" ng-class="{halfOpacity: step < 3}">
+                    #4 Copy and paste in your response<span class="glyphicon glyphicon-share-alt rotated90"></span>
                 </div>
-                <div data-ng-show="error" class="text-danger">
-                    <strong data-ng-bind="error"></strong>
+            </div>
+            <div class="row">
+                <div class="col-md-12" >
+                    <fieldset>
+                        <textarea ng-model="responseText" placeholder="Enter your response here..."
+                                  ng-disabled="step < 3" class="myTextArea"></textarea>
+                        <button ng-click="doStep(4)" class="btn btn-primary fullWidth">{{saveButtonText}}</button>
+                    </fieldset>
                 </div>
-            </fieldset>
+            </div>
         </div>
-    </div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div class="row" id="step2">
-        <div class="col-md-12" ng-class="{halfOpacity: step !== 2}">
-            #2 Copy this url into your app<span class="glyphicon glyphicon-share-alt rotated90"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" >
-            <fieldset>
-                <div>
-                    <input ng-disabled="step !== 2" type="text" data-ng-model="url"  id="name" class="form-control"
-                           placeholder="Url will be here" readonly>
-                </div>
-                <div data-ng-show="error" class="text-danger">
-                    <strong data-ng-bind="error"></strong>
-                </div>
-            </fieldset>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-right instruction" ng-class="{halfOpacity: step !== 2}">
-            (You can send as a POST, GET, ... with anything appended to the path)
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-left" ng-class="{halfOpacity: step !== 2}">
-            #3 And make your network request from your app
-        </div>
-    </div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div class="row">
-        <div class="col-md-12" ng-class="{halfOpacity: step !== 3}">
-            (Here's your request information)
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" >
-            <fieldset>
-                <textarea ng-model="requestText" placeholder="" ng-disabled="step !== 3" class="myTextArea" readonly></textarea>
-            </fieldset>
-        </div>
-    </div>
-    <div>&nbsp</div>
-    <div class="row" id="step3">
-        <div class="col-md-12" ng-class="{halfOpacity: step < 3}">
-            #4 Copy and paste in your response<span class="glyphicon glyphicon-share-alt rotated90"></span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" >
-            <fieldset>
-                <textarea ng-model="responseText" placeholder="Enter your response here..."
-                          ng-disabled="step < 3" class="myTextArea"></textarea>
-                <button ng-click="doStep(4)" class="btn btn-primary fullWidth">{{saveButtonText}}</button>
-            </fieldset>
-        </div>
-    </div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div>&nbsp</div>
-    <div class="row">
-        <div class="col-md-12" >
-            Have issues or comments? Please post them at <a target="_blank" href="https://github.com/captainchung/RestKit-testing/issues">https://github.com/captainchung/RestKit-testing/issues</a>
+        <div class="row">
+            <div class="col-md-12" >
+                Have issues or comments? Please post them at <a target="_blank" href="https://github.com/captainchung/RestKit-testing/issues">https://github.com/captainchung/RestKit-testing/issues</a>
+            </div>
         </div>
     </div>
     <div>&nbsp</div>
