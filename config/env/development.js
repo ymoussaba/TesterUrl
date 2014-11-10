@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/testkit-dev',
+	db: 'mongodb://localhost/testerUrl',
 	app: {
 		title: 'RestKit - Development Environment'
 	},
