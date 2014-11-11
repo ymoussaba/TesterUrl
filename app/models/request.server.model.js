@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+var connections = require('../../config/dbs'),
+    mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
@@ -54,4 +55,4 @@ var RequestSchema = new Schema({
     }
 });
 
-mongoose.model('Request', RequestSchema);
+module.exports = connections.requests.model('Request', RequestSchema);

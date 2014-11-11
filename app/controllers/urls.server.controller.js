@@ -5,7 +5,7 @@
  */
 var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
-    Url = mongoose.model('Url'),
+    Url = require('../models/url.server.model'),
     _ = require('lodash');
 
 /**
@@ -69,7 +69,7 @@ exports.list = function (req, res) {
  * Url middleware
  */
 exports.urlByID = function (req, res, next, id) {
-    Url.findById(id).populate('user', 'displayName').exec(function (err, url) {
+    Url.findById(id).exec(function (err, url) {
         if (err) return next(err);
         if (!url) return next(new Error('Failed to load Url ' + id));
         req.url = url;

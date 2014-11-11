@@ -4,23 +4,11 @@
  */
 var init = require('./config/init')(),
 	config = require('./config/config'),
-	mongoose = require('mongoose');
-
-/**
- * Main application entry file.
- * Please note that the order of loading is important.
- */
-
-// Bootstrap db connection
-var db = mongoose.connect(config.db, function(err) {
-	if (err) {
-		console.error('\x1b[31m', 'Could not connect to MongoDB!');
-		console.log(err);
-	}
-});
+	mongoose = require('mongoose'),
+	connections = require('./config/dbs');
 
 // Init the express application
-var app = require('./config/express')(db);
+var app = require('./config/express')(connections.main);
 
 // Bootstrap passport config
 require('./config/passport')();
@@ -33,3 +21,4 @@ exports = module.exports = app;
 
 // Logging initialization
 console.log('MEAN.JS application '+process.env.NODE_ENV+' started on port ' + config.port);
+

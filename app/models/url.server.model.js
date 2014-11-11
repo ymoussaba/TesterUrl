@@ -3,7 +3,9 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+
+var connections = require('../../config/dbs'),
+    mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
@@ -18,11 +20,7 @@ var UrlSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
-    },
-    user: {
-        type: Schema.ObjectId,
-        ref: 'User'
     }
 });
 
-mongoose.model('Url', UrlSchema);
+module.exports = connections.main.model('Url', UrlSchema);

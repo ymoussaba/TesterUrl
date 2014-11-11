@@ -5,9 +5,8 @@
  */
 var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
-    Request = mongoose.model('Request'),
-    responses = require('../../app/controllers/responses'),
-    Response = mongoose.model('Response'),
+    Request = require('../models/request.server.model'),
+    Response = require('../models/response.server.model'),
     RSVP = require('rsvp'),
     _ = require('lodash');
 
@@ -106,7 +105,7 @@ exports.requestByID = function (req, res, next) {
     var maxWait = 1000 * 60 * 10; // 10 min
 
     var callback = function () {
-        Request.findById(id).exec(function (err, request) {
+        Request.findById(id, function (err, request) {
             if (err)
                 return next(err);
             if (!request) {

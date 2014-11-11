@@ -5,8 +5,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
     function ($scope, Authentication, Urls, $location, $http, RequestObserver, AnchorSmoothScroll, toaster, $window) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
-        $scope.saveButtonText = 'Save';
-        localStorage.clear();
 
         $scope.nextStep = function(step) {
             $scope.step = ++step;
@@ -14,8 +12,17 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         };
 
         $scope.doStep = function(step) {
+
+            //if (!localStorage.id) {
+            //    step = 0;
+            //}
+
             $scope.step = step;
             switch (step) {
+                case 0: {
+                    init();
+                    break;
+                }
                 case 1: {
                     createUrl();
                     break;
@@ -35,6 +42,12 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             }
             }
         };
+
+        function init() {
+            gotoElement('step0');
+            $scope.saveButtonText = 'Save';
+            localStorage.clear();
+        }
 
         // Create new Url
         function createUrl() {
