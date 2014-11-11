@@ -2,9 +2,9 @@
 
 module.exports = {
 	app: {
-		title: 'RestKit',
-		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
-		keywords: 'MongoDB, Express, AngularJS, Node.js'
+		title: 'TesterUrl',
+		description: 'Tester Url is a responsive playground server that provides an easy way to test your iOS/Android apps',
+		keywords: 'iOS, Android, MongoDB, Express, AngularJS, Node.js'
 	},
 	port: process.env.PORT || 4000,
 	templateEngine: 'swig',
@@ -28,8 +28,6 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                //'public/lib/zeroclipboard/dist/ZeroClipboard.min.js',
-                //'public/lib/ng-clip/src/ngClip.js',
                 'public/lib/angular-block-ui/dist/angular-block-ui.js',
 				'public/lib/angularjs-toaster/toaster.js'
 			]

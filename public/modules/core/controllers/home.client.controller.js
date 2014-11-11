@@ -13,10 +13,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
         $scope.doStep = function(step) {
 
-            //if (!localStorage.id) {
-            //    step = 0;
-            //}
-
             $scope.step = step;
             switch (step) {
                 case 0: {

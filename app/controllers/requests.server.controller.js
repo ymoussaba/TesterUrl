@@ -33,7 +33,7 @@ exports.handleClientRequest = function (req, res, next) {
         Response.findById(id).exec(function (err, response) {
             if (err)
                 return next(new Error('Failed to load Response ' + id));
-            if (!response || response._doc.body === '') {
+            if (!response || response._doc.body === null) {
                 totalWait += waitDuration;
                 let timer = setTimeout(poll.bind(this, id, totalWait, waitDuration, maxWait), waitDuration);
                 if (totalWait >= maxWait) {

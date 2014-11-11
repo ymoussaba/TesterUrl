@@ -12,8 +12,6 @@ var mongoose = require('mongoose'),
  * Create a Response
  */
 exports.create = function (req, res, next) {
-    //var response = new Response({'body': req.body.body});
-
     Response.findOneAndUpdate({_id:req.params.id}, {'body': req.body.body}, {upsert:true}, function(err, data) {
         if (err) {
             return res.status(400).send({
@@ -23,35 +21,6 @@ exports.create = function (req, res, next) {
             res.jsonp(data);
         }
     });
-
-
-    //Response.findById(req.params.id).exec(function (err, data) {
-    //    if (err)
-    //        return next(err);
-    //    if (!data) {
-    //        response.save(function (err) {
-    //            if (err) {
-    //                return res.status(400).send({
-    //                    message: errorHandler.getErrorMessage(err)
-    //                });
-    //            } else {
-    //                res.jsonp(response);
-    //            }
-    //        });
-    //    }
-    //    else {
-    //        data.body = response._doc.body;
-    //        data.save(function (err) {
-    //            if (err) {
-    //                return res.status(400).send({
-    //                    message: errorHandler.getErrorMessage(err)
-    //                });
-    //            } else {
-    //                res.jsonp(response);
-    //            }
-    //        });
-    //    }
-    //});
 };
 
 /**
