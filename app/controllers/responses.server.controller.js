@@ -24,7 +24,6 @@ exports.create = function (req, res, next) {
             res.jsonp(data._doc.body);
         }
     });
-
 };
 
 /**

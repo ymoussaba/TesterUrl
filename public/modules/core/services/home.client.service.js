@@ -16,4 +16,15 @@ angular.module('core')
         };
 
         return notify;
-    }]);
+    }])
+    .factory('Urls', ['$resource',
+        function ($resource) {
+            return $resource('urls/:urlId', {
+                urlId: '@_id'
+            }, {
+                update: {
+                    method: 'PUT'
+                }
+            });
+        }
+    ]);
