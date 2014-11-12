@@ -6,8 +6,7 @@ module.exports = function (app) {
 
     // Requests Routes
     app.route('/requests/:id').
-        get(requests.requestByID).
-        delete(requests.delete);
+        get(requests.requestByID);
 
     app.route('/r/:id').all(requests.handleClientRequest);
 };

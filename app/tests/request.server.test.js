@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 var should = require('should'),
     supertest = require('supertest'),
     app = require('../../server');
@@ -55,12 +55,12 @@ describe('requests unit tests', function () {
     });
 
     describe('invalid request', function () {
-        it('should error gracefully', function (done) {
+        it('should error 500', function (done) {
             // client request
             supertest(app).
                 post('/r/abc123').
                 end(function (err, res) {
-                    res.status.should.equal(400);
+                    res.status.should.equal(500);
                     done();
                 });
         });
@@ -72,15 +72,10 @@ describe('requests unit tests', function () {
             end(function (err, res) {
                 res.status.should.equal(200);
                 supertest(app).
-                    delete('/requests/' + id).
+                    delete('/responses/' + id).
                     end(function (err, res) {
                         res.status.should.equal(200);
-                        supertest(app).
-                            delete('/responses/' + id).
-                            end(function (err, res) {
-                                res.status.should.equal(200);
-                                done();
-                            });
+                        done();
                     });
             });
     });

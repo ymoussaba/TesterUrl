@@ -2,7 +2,6 @@
 
 module.exports = {
 	db: 'mongodb://localhost/main',
-	dbRequests: 'mongodb://localhost/requests',
 	app: {
 		title: 'RestKit - Development Environment'
 	},

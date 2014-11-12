@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
     Response = require('../models/response.server.model'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    connections = require('../../config/dbs');
 
 /**
  * Create a Response
@@ -18,28 +19,12 @@ exports.create = function (req, res, next) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.jsonp(data);
+            let channel = connections.client.channel('mubsub.response');
+            channel.publish(data._doc._id.toString(), data._doc.body);
+            res.jsonp(data._doc.body);
         }
     });
-};
 
-/**
- * Update a Response
- */
-exports.update = function (req, res) {
-    var response = req.response;
-
-    response = _.extend(response, req.body);
-
-    response.save(function (err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(response);
-        }
-    });
 };
 
 /**

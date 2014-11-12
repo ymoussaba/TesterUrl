@@ -2,7 +2,6 @@
 
 module.exports = {
 	db: process.env.MONGOLAB_MAIN_URI,
-	dbRequests: process.env.MONGOLAB_REQUESTS_URI,
 	assets: {
 		lib: {
 			css: [
