@@ -40,7 +40,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         };
 
         function init() {
-            gotoElement('step0');
+            //gotoElement('step0');
             $scope.saveButtonText = 'Save';
             localStorage.clear();
         }

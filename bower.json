@@ -14,11 +14,8 @@
     "angular-bootstrap": "~0.11.0",
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.10",
-    "zeroclipboard": "~2.1.6",
-    "ng-clip": "~0.2.4",
-    "angular-block-ui": "~0.1.1",
     "when": "~3.5.1",
-    "rsvp": "~3.0.13",
-    "angularjs-toaster": "~0.4.8"
+    "angularjs-toaster": "~0.4.8",
+    "angular-socket-io": "~0.6.0"
   }
 }
