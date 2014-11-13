@@ -30,14 +30,14 @@ bower install
 grunt nodemon
 ```
 
-## Community
+## Issues
 
 If you encounter any problem or have feedback, enter an Issue.
 
 ## Attribution
-[MeanJS](http://meanjs.org/) and everything it uses
-[AngularJS-Toaster](https://github.com/jirikavi/AngularJS-Toaster)
-[Mubsub](https://github.com/scttnlsn/mubsub)
+* [MeanJS](http://meanjs.org/) and everything it uses
+* [AngularJS-Toaster](https://github.com/jirikavi/AngularJS-Toaster)
+* [Mubsub](https://github.com/scttnlsn/mubsub)
 
 ## License
 (The MIT License)
