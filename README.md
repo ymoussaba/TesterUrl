@@ -1,4 +1,14 @@
-[![MEAN.JS Logo](http://meanjs.org/img/logo-small.png)](http://meanjs.org/)
+Tester Url is a responsive playground server that provides an easy way to test your iOS/Android apps. It works with 5 simple steps:
+
+
+## Live Example
+Browse the live MEAN.JS example on [http://meanjs.herokuapp.com](http://meanjs.herokuapp.com).
+* Generate your Url
+* Copy the Url into your App
+* Make a network request from that App
+* Cut and paste in a response
+* Watch that response go down to your App
+
 
 MEAN.JS is a full-stack JavaScript open-source solution, which provides a solid starting point for [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/) based applications. The idea is to solve the common issues with connecting those frameworks, build a robust framework to support daily development needs, and help developers use better practices while working with popular JavaScript components. 
 
