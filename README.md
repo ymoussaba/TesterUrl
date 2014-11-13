@@ -1,13 +1,29 @@
+## Tester Url
+
 Tester Url is a responsive playground server that provides an easy way to test your iOS/Android apps. It works with 5 simple steps:
 
+* Generate your Url
+* Copy the Url into your app
+* Make a network request from that app
+* Cut and paste in a response
+* Watch that response go down to your app
 
 ## Live Example
-Browse the live MEAN.JS example on [http://meanjs.herokuapp.com](http://meanjs.herokuapp.com).
-* Generate your Url
-* Copy the Url into your App
-* Make a network request from that App
-* Cut and paste in a response
-* Watch that response go down to your App
+Browse the live demo on [http://testerurl.com](http://testerurl.com)
+
+## Before You Begin
+
+Tester Url is build on top of [MEAN.JS](https://github.com/meanjs/mean) so I recommend heading over there and making sure you are familiar with the MEAN stack and everything that is there.
+
+## Installation
+
+```
+git clone https://github.com/captainchung/TesterUrl.git
+cd TesterUrl
+npm install
+bower install
+node --harmony server.js or grunt nodemon
+```
 
 
 MEAN.JS is a full-stack JavaScript open-source solution, which provides a solid starting point for [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/) based applications. The idea is to solve the common issues with connecting those frameworks, build a robust framework to support daily development needs, and help developers use better practices while working with popular JavaScript components. 
