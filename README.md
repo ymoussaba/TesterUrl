@@ -9,7 +9,7 @@ Tester Url is a backend for testing when you don't one. It works with 5 simple s
 * Watch that response go down to your app
 
 ## Live Example
-Browse the live demo on [http://testerurl.com](http://testerurl.com)
+Browse the live demo on [http://testerurl.com](http://testerurl.com). If I have time, video tutorials are on the way as well.
 
 ## Before You Begin
 
@@ -22,7 +22,6 @@ git clone https://github.com/captainchung/TesterUrl.git
 cd TesterUrl
 npm install
 bower install
-node --harmony server.js or grunt nodemon
 ```
 
 ## Running Your Application
