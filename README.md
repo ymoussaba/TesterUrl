@@ -30,6 +30,10 @@ bower install
 grunt
 ```
 
+## Note
+
+Not everything is being used. There are still some fragments from MEAN.js which have not been refactored out.
+
 ## Issues
 
 If you encounter any problem or have feedback (positive or negative), enter an Issue.
