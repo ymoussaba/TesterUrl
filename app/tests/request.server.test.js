@@ -54,18 +54,6 @@ describe('requests unit tests', function () {
         });
     });
 
-    describe('invalid request', function () {
-        it('should error 500', function (done) {
-            // client request
-            supertest(app).
-                post('/r/abc123').
-                end(function (err, res) {
-                    res.status.should.equal(500);
-                    done();
-                });
-        });
-    });
-
     after(function (done) {
         supertest(app).
             delete('/urls/' + id).

@@ -4,7 +4,7 @@ module.exports = {
 	db: process.env.MONGOLAB_MAIN_URI,
 	port: 3001,
 	app: {
-		title: 'TestKit - Test Environment'
+		title: 'Tester Url - Test Environment'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

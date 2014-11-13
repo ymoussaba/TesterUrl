@@ -7,11 +7,9 @@ angular.module('core')
         notify.observe = function (id, receivedStr) {
             $http.get('/requests/' + id).
                 success(function (data, status, headers, config) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                    console.log(data);
-
                     $rootScope.$broadcast(receivedStr, data);
+                    // make request if another request comes in
+                    notify.observe(id, receivedStr);
                 });
         };
 

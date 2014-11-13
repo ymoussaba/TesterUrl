@@ -47,7 +47,7 @@ exports.handleClientRequest = function (req, res, next) {
         if(subscription) {
             subscription.unsubscribe();
         }
-    })
+    });
 };
 
 /**
@@ -65,7 +65,7 @@ exports.requestByID = function (req, res, next) {
         if(subscription) {
             subscription.unsubscribe();
         }
-    })
+    });
 };
 
 /**
