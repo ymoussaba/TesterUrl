@@ -32,7 +32,7 @@ grunt
 
 ## Note
 
-Not everything is being used. There are still some fragments from MEAN.js which have not been refactored out.
+Not everything is being used. There are still some fragments from the MEAN.js scaffold which have not been refactored out.
 
 ## Issues
 
