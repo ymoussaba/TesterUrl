@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function () {
     // Init module configuration options
     var applicationModuleName = 'testkit';
-    var applicationModuleVendorDependencies = ['ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', /*'ngClipboard',*/ 'toaster'];
+    var applicationModuleVendorDependencies = ['ngResource', 'ngCookies', 'ngAnimate', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'toaster'];
 
     // Add a new vertical module
     var registerModule = function (moduleName, dependencies) {
@@ -48,18 +48,6 @@ angular.element(document).ready(function () {
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('core');
 
-'use strict';
-
-// Use applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('requests');
-'use strict';
-
-// Use applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('responses');
-'use strict';
-
-// Use applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('urls');
 'use strict';
 
 // Use Applicaion configuration module to register a new module
@@ -112,8 +100,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
     function ($scope, Authentication, Urls, $location, $http, RequestObserver, AnchorSmoothScroll, toaster, $window) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
-        $scope.saveButtonText = 'Save';
-        localStorage.clear();
 
         $scope.nextStep = function(step) {
             $scope.step = ++step;
@@ -121,8 +107,13 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         };
 
         $scope.doStep = function(step) {
+
             $scope.step = step;
             switch (step) {
+                case 0: {
+                    init();
+                    break;
+                }
                 case 1: {
                     createUrl();
                     break;
@@ -142,6 +133,12 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             }
             }
         };
+
+        function init() {
+            //gotoElement('step0');
+            $scope.saveButtonText = 'Save';
+            localStorage.clear();
+        }
 
         // Create new Url
         function createUrl() {
@@ -231,29 +228,27 @@ angular.module('core')
     .factory('RequestObserver', ['$rootScope', '$http', function ($rootScope, $http) {
         var notify = {};
         notify.observe = function (id, receivedStr) {
-            $http.post('/responses/' + id).
+            $http.get('/requests/' + id).
                 success(function (data, status, headers, config) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                    console.log(data);
-                    $http.get('/requests/' + id).
-                        success(function (data, status, headers, config) {
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            console.log(data);
-
-                            $rootScope.$broadcast(receivedStr, data);
-                        });
-                }).
-                error(function (data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    console.log(data);
+                    $rootScope.$broadcast(receivedStr, data);
+                    // make request if another request comes in
+                    notify.observe(id, receivedStr);
                 });
         };
 
         return notify;
-    }]);
+    }])
+    .factory('Urls', ['$resource',
+        function ($resource) {
+            return $resource('urls/:urlId', {
+                urlId: '@_id'
+            }, {
+                update: {
+                    method: 'PUT'
+                }
+            });
+        }
+    ]);
 
 'use strict';
 
@@ -477,369 +472,6 @@ angular.module('core').service('AnchorSmoothScroll', [
             }
 
         };
-    }
-]);
-
-'use strict';
-
-// Configuring the Articles module
-angular.module('requests').run(['Menus',
-    function (Menus) {
-        // Set top bar menu items
-        Menus.addMenuItem('topbar', 'Requests', 'requests', 'dropdown', '/requests(/create)?');
-        Menus.addSubMenuItem('topbar', 'requests', 'List Requests', 'requests');
-        Menus.addSubMenuItem('topbar', 'requests', 'New Request', 'requests/create');
-    }
-]);
-
-'use strict';
-
-//Setting up route
-angular.module('requests').config(['$stateProvider',
-    function ($stateProvider) {
-        // Requests state routing
-        $stateProvider.
-            state('listRequests', {
-                url: '/requests',
-                templateUrl: 'modules/requests/views/list-requests.client.view.html'
-            }).
-            state('createRequest', {
-                url: '/requests/create',
-                templateUrl: 'modules/requests/views/create-request.client.view.html'
-            }).
-            state('viewRequest', {
-                url: '/requests/:requestId',
-                templateUrl: 'modules/requests/views/view-request.client.view.html'
-            }).
-            state('editRequest', {
-                url: '/requests/:requestId/edit',
-                templateUrl: 'modules/requests/views/edit-request.client.view.html'
-            });
-    }
-]);
-
-'use strict';
-
-// Requests controller
-angular.module('requests').controller('RequestsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Requests', 'responses',
-    function ($scope, $stateParams, $location, Authentication, Requests, responses) {
-        $scope.authentication = Authentication;
-
-        // Create new Request
-        $scope.create = function () {
-            // Create new Request object
-            var request = new Requests({
-                name: this.name
-            });
-
-            // Redirect after save
-            request.$save(function (response) {
-                $location.path('requests/' + response._id);
-
-                // Clear form fields
-                $scope.name = '';
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
-
-        // Remove existing Request
-        $scope.remove = function (request) {
-            if (request) {
-                request.$remove();
-
-                for (var i in $scope.requests) {
-                    if ($scope.requests [i] === request) {
-                        $scope.requests.splice(i, 1);
-                    }
-                }
-            } else {
-                $scope.request.$remove(function () {
-                    $location.path('requests');
-                });
-            }
-        };
-
-        // Update existing Request
-        $scope.update = function () {
-            var request = $scope.request;
-
-            request.$update(function () {
-                $location.path('requests/' + request._id);
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
-
-        // Find a list of Requests
-        $scope.find = function () {
-            $scope.requests = Requests.query();
-        };
-
-        // Find existing Request
-        $scope.findOne = function () {
-            $scope.request = Requests.get({
-                requestId: $stateParams.requestId
-            });
-        };
-    }
-]);
-
-'use strict';
-
-//Requests service used to communicate Requests REST endpoints
-angular.module('requests').factory('Requests', ['$resource',
-    function ($resource) {
-        return $resource('requests/:requestId', {
-            requestId: '@_id'
-        }, {
-            update: {
-                method: 'PUT'
-            }
-        });
-    }]);
-
-'use strict';
-
-// Configuring the Articles module
-angular.module('responses').run(['Menus',
-    function (Menus) {
-        // Set top bar menu items
-        Menus.addMenuItem('topbar', 'Responses', 'responses', 'dropdown', '/responses(/create)?');
-        Menus.addSubMenuItem('topbar', 'responses', 'List Responses', 'responses');
-        Menus.addSubMenuItem('topbar', 'responses', 'New Response', 'responses/create');
-    }
-]);
-
-'use strict';
-
-//Setting up route
-angular.module('responses').config(['$stateProvider',
-    function ($stateProvider) {
-        // Responses state routing
-        $stateProvider.
-            state('listResponses', {
-                url: '/responses',
-                templateUrl: 'modules/responses/views/list-responses.client.view.html'
-            }).
-            state('createResponse', {
-                url: '/responses/create/:responseId',
-                templateUrl: 'modules/responses/views/create-response.client.view.html'
-            }).
-            state('viewResponse', {
-                url: '/responses/:responseId',
-                templateUrl: 'modules/responses/views/view-response.client.view.html'
-            }).
-            state('editResponse', {
-                url: '/responses/:responseId/edit',
-                templateUrl: 'modules/responses/views/edit-response.client.view.html'
-            });
-    }
-]);
-
-'use strict';
-
-// Responses controller
-angular.module('responses').controller('ResponsesController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Responses', 'blockUI', 'Notify', 'Urls',
-    function ($scope, $stateParams, $http, $location, Authentication, Responses, blockUI, Notify, Urls) {
-        $scope.authentication = Authentication;
-
-        // Create new Response
-        $scope.create = function () {
-
-            var id = $location.$$url.split('/')[3];
-            $http.post('/responses/' + id, {'body': $scope.responseText}).
-                success(function (data, status, headers, config) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                    console.log(data);
-                }).
-                error(function (data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    console.log(data);
-                });
-        };
-
-        // Remove existing Response
-        $scope.remove = function (response) {
-            if (response) {
-                response.$remove();
-
-                for (var i in $scope.responses) {
-                    if ($scope.responses [i] === response) {
-                        $scope.responses.splice(i, 1);
-                    }
-                }
-            } else {
-                $scope.response.$remove(function () {
-                    $location.path('responses');
-                });
-            }
-        };
-
-        // Update existing Response
-        $scope.update = function () {
-            var response = $scope.response;
-
-            response.$update(function () {
-                $location.path('responses/' + response._id);
-            }, function (errorResponse) {
-                $scope.error = errorResponse.data.message;
-            });
-        };
-
-        // Find a list of Responses
-        $scope.find = function () {
-            $scope.responses = Responses.query();
-        };
-
-        $scope.ready = function () {
-            blockUI.start('Make a request already :)');
-            var id = $location.$$url.split('/')[3];
-            Notify.sendMsg('Waiting', {'id': id});
-
-            $scope.$on('Received', function () {
-                blockUI.stop();
-            });
-        };
-
-
-        // Find existing Response
-        $scope.findOne = function () {
-            $scope.response = Responses.get({
-                responseId: $stateParams.responseId
-            });
-        };
-    }
-]);
-
-//'use strict';
-//
-////Responses service used to communicate Responses REST endpoints
-//angular.module('home')
-//    .factory('RequestObserver', ['$rootScope', '$http', function ($rootScope, $http) {
-//        var notify = {};
-//        notify.observe = function (id, receivedStr) {
-//            $http.post('/responses/' + id).
-//                success(function (data, status, headers, config) {
-//                    // this callback will be called asynchronously
-//                    // when the response is available
-//                    console.log(data);
-//                    $http.get('/requests/' + data._id).
-//                        success(function (data, status, headers, config) {
-//                            // this callback will be called asynchronously
-//                            // when the response is available
-//                            console.log(data);
-//
-//                            $rootScope.$broadcast(receivedStr);
-//                        });
-//
-//
-//                }).
-//                error(function (data, status, headers, config) {
-//                    // called asynchronously if an error occurs
-//                    // or server returns response with an error status.
-//                    console.log(data);
-//                });
-//        };
-//
-//        return notify;
-//    }]);
-
-'use strict';
-
-// Configuring the Articles module
-angular.module('urls').run(['Menus',
-    function (Menus) {
-        // Set top bar menu items
-        Menus.addMenuItem('topbar', 'Urls', 'urls', 'dropdown', '/urls(/create)?');
-        Menus.addSubMenuItem('topbar', 'urls', 'List Urls', 'urls');
-        Menus.addSubMenuItem('topbar', 'urls', 'New Url', 'urls/create');
-    }
-]);
-
-'use strict';
-
-//Setting up route
-angular.module('urls').config(['$stateProvider',
-    function ($stateProvider) {
-        // Urls state routing
-        $stateProvider.
-            state('listUrls', {
-                url: '/urls',
-                templateUrl: 'modules/urls/views/list-urls.client.view.html'
-            }).
-            state('createUrl', {
-                url: '/urls/create',
-                templateUrl: 'modules/urls/views/create-url.client.view.html'
-            }).
-            state('viewUrl', {
-                url: '/urls/:urlId',
-                templateUrl: 'modules/urls/views/view-url.client.view.html'
-            }).
-            state('editUrl', {
-                url: '/urls/:urlId/edit',
-                templateUrl: 'modules/urls/views/edit-url.client.view.html'
-            });
-    }
-]);
-
-'use strict';
-
-// Urls controller
-angular.module('urls').controller('UrlsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Urls',
-    function ($scope, $stateParams, $location, Authentication, Urls) {
-        $scope.authentication = Authentication;
-
-        //// Create new Url
-        //$scope.create = function () {
-        //    // Create new Url object
-        //    var url = new Urls({
-        //        name: this.name
-        //    });
-        //
-        //    // Redirect after save
-        //    url.$save(function (response) {
-        //        localStorage.firstName = response._id;
-        //
-        //        // Disable step 1 form fields
-        //        var generateBtn = angular.element( document.querySelector( '#generateBtn' ) )[0];
-        //        generateBtn.disabled = true;
-        //
-        //        var step1 = angular.element( document.querySelector( '#step1' ) )[0];
-        //        step1.style.opacity = 0.4;
-        //
-        //    }, function (errorResponse) {
-        //        $scope.error = errorResponse.data.message;
-        //    });
-        //};
-
-        // Find existing Url
-        $scope.findOne = function () {
-            Urls.myId = $stateParams.urlId;
-            $scope.id = $stateParams.urlId;
-            $scope.url = Urls.get({
-                urlId: $stateParams.urlId
-            }, function () {
-                $scope.url.value = 'http://' + $location.$$host + ':' + $location.$$port + '/r/' + $stateParams.urlId;
-            });
-        };
-    }
-]);
-
-'use strict';
-
-//Urls service used to communicate Urls REST endpoints
-angular.module('urls').factory('Urls', ['$resource',
-    function ($resource) {
-        return $resource('urls/:urlId', {
-            urlId: '@_id'
-        }, {
-            update: {
-                method: 'PUT'
-            }
-        });
     }
 ]);
 
