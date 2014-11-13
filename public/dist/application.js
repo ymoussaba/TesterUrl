@@ -183,6 +183,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     Object.keys(req.headers).forEach(function (key, index) {
                         str += '   '+key + ':' + this[key] + '\n';
                     }, req.headers);
+                    str += '\n';
+                    str += 'body:\n';
+                    Object.keys(req.body).forEach(function (key, index) {
+                        str += '   '+key + ':' + this[key] + '\n';
+                    }, req.body);
                     return str;
                 }
                 $scope.requestText = formatRequest(args);
