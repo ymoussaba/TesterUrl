@@ -27,12 +27,12 @@ bower install
 ## Running Your Application
 
 ```
-grunt nodemon
+grunt
 ```
 
 ## Issues
 
-If you encounter any problem or have feedback, enter an Issue.
+If you encounter any problem or have feedback (positive or negative), enter an Issue.
 
 ## Attribution
 * [MeanJS](http://meanjs.org/) and everything it uses
