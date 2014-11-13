@@ -56,7 +56,6 @@ exports.handleClientRequest = function (req, res, next) {
 exports.requestByID = function (req, res, next) {
     let channel = connections.client.channel('mubsub.request');
     let subscription = channel.subscribe(req.params.id, function (request) {
-        console.log(request);
         res.jsonp(request);
         subscription.unsubscribe();
     });
