@@ -15,8 +15,9 @@ angular.module('core')
                 }).
                 error(function(data, status, headers, config) {
                     console.log('error:'+data)
+                    // make request if another request comes in
+                    notify.observe(id, receivedStr);
                 });
-
             // if the requesting client makes a request in an hour,
             $timeout(function() {
                 console.log(new Date());
