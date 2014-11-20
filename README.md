@@ -9,7 +9,7 @@ Tester Url is a backend for testing when you don't one. It works with 5 simple s
 * Watch that response go down to your app
 
 ## Live Example
-Browse the live demo on [http://testerurl.com](http://testerurl.com). If I have time, video tutorials are on the way as well.
+Browse the live app on [http://testerurl.com](http://testerurl.com). For an iOS networking tutorial using Tester Url, check out [https://github.com/captainchung/iOS-Networking-Examples](https://github.com/captainchung/iOS-Networking-Examples)
 
 ## Before You Begin
 
