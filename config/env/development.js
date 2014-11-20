@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/main',
+	db: 'mongodb://localhost/main?maxPoolSize=40',
 	app: {
 		title: 'Tester Url - Development Environment'
 	},

@@ -23,7 +23,7 @@ describe('requests unit tests', function () {
     });
 
     describe('create request', function () {
-        it('should create request', function (done) {
+        it('should create request which is read by the response', function (done) {
             // client request
             supertest(app).
                 post('/r/' + id).
