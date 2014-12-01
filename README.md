@@ -1,6 +1,6 @@
 ## Tester Url
 
-Tester Url is a backend for testing when you don't one. It works with 5 simple steps:
+Tester Url is a backend for testing when you don't have one. It works with 5 simple steps:
 
 * Generate your Url
 * Copy the Url into your app
